@@ -1,1 +1,2 @@
- ![Demo](lidar_res.gif)
+## Denoising Diffusion Probabilistic Models
+ ![Demo](output.gif)
