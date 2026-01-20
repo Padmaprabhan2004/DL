@@ -29,11 +29,11 @@ def train(args):
     dataset_config = config['dataset_params']
     model_config = config['model_params']
     train_config = config['train_params']
-    
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # Create the noise scheduler
     scheduler = DiffusionNoiseScheduler(n_steps=diffusion_config['num_timesteps'],
                                      beta_init=diffusion_config['beta_start'],
-                                     beta_end=diffusion_config['beta_end'])
+                                     beta_end=diffusion_config['beta_end'],device=device)
     
     # Create the dataset
     mnist = MnistDataset('train', im_path=dataset_config['im_path'])

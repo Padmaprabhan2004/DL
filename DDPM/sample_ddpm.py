@@ -47,22 +47,22 @@ def infer(args):
         except yaml.YAMLError as exc:
             print(exc)
     print(config)
-    ########################
+
     
     diffusion_config = config['diffusion_params']
     model_config = config['model_params']
     train_config = config['train_params']
     
     # Load model with checkpoint
-    model = UNet(model_config).to(device)
+    model = UNet(in_channels=1).to(device)
     model.load_state_dict(torch.load(os.path.join(train_config['task_name'],
                                                   train_config['ckpt_name']), map_location=device))
     model.eval()
     
     # Create the noise scheduler
-    scheduler = DiffusionNoiseScheduler(num_timesteps=diffusion_config['num_timesteps'],
-                                     beta_start=diffusion_config['beta_start'],
-                                     beta_end=diffusion_config['beta_end'])
+    scheduler = DiffusionNoiseScheduler(n_steps=diffusion_config['num_timesteps'],
+                                     beta_init=diffusion_config['beta_start'],
+                                     beta_end=diffusion_config['beta_end'],device=device)
     with torch.no_grad():
         sample(model, scheduler, train_config, model_config, diffusion_config)
 
@@ -70,6 +70,6 @@ def infer(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Arguments for ddpm image generation')
     parser.add_argument('--config', dest='config_path',
-                        default='config/default.yaml', type=str)
+                        default='default.yaml', type=str)
     args = parser.parse_args()
     infer(args)
