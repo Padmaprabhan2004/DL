@@ -1,2 +1,2 @@
 ## Denoising Diffusion Probabilistic Models
- ![Demo](output.gif)
+![Demo](output.gif)
